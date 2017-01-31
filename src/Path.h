@@ -1,13 +1,16 @@
 #ifndef AVP_PATH_H
 #define AVP_PATH_H
 
+#include <AL/al.h>
+#include <AL/alc.h>
+
 #include <vector>
 #include <array>
 #include <string>
 
 namespace AVP {
 
-typedef std::array<double,3> Point;
+typedef std::array<ALfloat,3> Point;
 
 class Path
 {
@@ -15,7 +18,7 @@ public:
     Path(const std::string& file);
     ~Path();
 
-    bool load(const std::string& file);
+    void load(const std::string& file);
 
 protected:
 
@@ -31,7 +34,7 @@ class PathFactory
 {
 public:
 
-    static Path* Create();
+    static Path Create();
 
 private:
     PathFactory() {}

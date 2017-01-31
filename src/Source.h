@@ -3,21 +3,30 @@
 
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <AL/alut.h>
 
 namespace AVP {
 
 class Source
 {
 public:
-    Source();
+    Source(const std::string& file);
     ~Source();
-
-    bool init();
-    bool load(const std::string& file);
 
 protected:
 
-    ALuint m_buffer;
+//    static bool LoadWAVFile(const char* filename, ALenum* format, ALvoid** data, ALsizei* size, ALsizei* freq, Float64* estimatedDurationOut);
+
+protected:
+
+    ALuint  m_buffer;
+    ALuint  m_source;
+
+    ALenum  m_format;
+    ALvoid* m_data;
+    ALsizei m_size;
+    ALsizei m_freq;
+    ALboolean m_loop;
 
 }; // class Source
 

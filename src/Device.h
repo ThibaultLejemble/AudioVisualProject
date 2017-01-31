@@ -11,12 +11,10 @@ public:
     Device();
     ~Device();
 
-    bool init();
-
 protected:
 
-    ALCdevice* m_internalDevice;
-    ALCcontext* m_internalContext;
+    ALCdevice* m_device;
+    ALCcontext* m_context;
 
 }; // class Device
 

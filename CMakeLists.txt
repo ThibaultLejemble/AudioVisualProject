@@ -10,9 +10,8 @@ file(GLOB_RECURSE FILE_H src/*.h)
 add_executable( ${PROJECT_NAME} ${FILE_CPP} ${FILE_H} )
 
 # OpenAL
-# OPENAL_LIBRARY: path to shared library .so
-# OPENAL_INCLUDE: path to headers folder
 set( OPENAL_LIBRARY      /usr/lib/x86_64-linux-gnu/libopenal.so )
+set( ALUT_LIBRARY        /usr/lib/x86_64-linux-gnu/libalut.so )
 set( OPENAL_INCLUDE      /usr/include )
 include_directories( ${OPENAL_INCLUDE} )
-target_link_libraries( ${PROJECT_NAME} ${OPENAL_LIBRARY} )
+target_link_libraries( ${PROJECT_NAME} ${OPENAL_LIBRARY} ${ALUT_LIBRARY})

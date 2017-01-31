@@ -4,32 +4,28 @@
 namespace AVP {
 
 Device::Device() :
-    m_internalDevice(NULL),
-    m_internalContext(NULL)
+    m_device(NULL),
+    m_context(NULL)
 {
+    m_device = alcOpenDevice(NULL);
 
+    if(m_device)
+    {
+        m_context = alcCreateContext(m_device, NULL);
+        alcMakeContextCurrent(m_context);
+    }
+    else
+        ERROR("device initialization");
 }
 
 Device::~Device()
 {
-
-}
-
-bool Device::init()
-{
-    m_internalDevice = alcOpenDevice(NULL);
-
-    if(m_internalDevice)
-    {
-        m_internalContext = alcCreateContext(m_internalDevice, NULL);
-        alcMakeContextCurrent(m_internalContext);
-    }
-    else
-    {
-        ERROR("Error initializing Device...");
-        return false;
-    }
-    return true;
+    // Exit
+    m_context = alcGetCurrentContext();
+    m_device = alcGetContextsDevice(m_context);
+    alcMakeContextCurrent(NULL);
+    alcDestroyContext(m_context);
+    alcCloseDevice(m_device);
 }
 
 } // namespace AVP

@@ -1,6 +1,8 @@
 #include "AudioVisualProject.h"
 #include "Path.h"
 
+#include <fstream>
+
 namespace AVP {
 
 Path::Path(const std::vector<Point> &positions) :
@@ -20,19 +22,40 @@ Path::~Path()
 
 }
 
-bool Path::load(const std::string& file)
+void Path::load(const std::string& file)
 {
-    //TODO
-    return false;
+    // opening file
+    std::ifstream stream(file);
+    if(!stream.is_open())
+        ERROR("opening file");
+
+    std::string line;
+    ALfloat x, y, z;
+    uint n;
+
+    m_positions.clear();
+
+    while(std::getline(stream, line)) {
+        if(line.size()==0)
+            continue;
+
+        n = sscanf(line.c_str(), "%f %f %f", &x, &y, &z);
+        if(n!=3)
+            ERROR("corrupted file");
+
+        m_positions.push_back({x,y,z});
+    }
+
+    stream.close();
 }
 
-Path* PathFactory::Create()
+Path PathFactory::Create()
 {
     std::vector<Point> positions;
 
     //TODO
 
-    return new Path(positions);
+    return Path(positions);
 }
 
 
