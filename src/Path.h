@@ -20,27 +20,25 @@ public:
 
     void load(const std::string& file);
 
+    inline const ALfloat* at(double t) const {
+        return m_positions[(size_t)(t/m_dt)].data();
+    }
+
+    inline const Point& pointAt(double t) const {
+        return m_positions[(size_t)(t/m_dt)];
+    }
+
+    inline const double& duration() const {
+        return m_duration;
+    }
+
 protected:
 
-    Path(const std::vector<Point>& positions);
-
     std::vector<Point> m_positions;
-
-    friend class PathFactory;
+    double m_duration;
+    double m_dt;
 
 }; // class Path
-
-class PathFactory
-{
-public:
-
-    static Path Create();
-
-private:
-    PathFactory() {}
-    ~PathFactory() {}
-
-}; // class PathFactory
 
 } // namespace AVP
 

@@ -5,11 +5,15 @@
 
 namespace AVP {
 
+class Source;
+
 class Device
 {
 public:
     Device();
     ~Device();
+
+    static void run(Source &source);
 
 protected:
 

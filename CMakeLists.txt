@@ -1,7 +1,7 @@
 project( AudioVisualProject )
 
 cmake_minimum_required( VERSION 2.8 )
-add_definitions( -Wall )
+add_definitions( -Wall -Winline)
 set ( CMAKE_CXX_STANDARD 14 )
 
 file(GLOB_RECURSE FILE_CPP src/*.cpp)
