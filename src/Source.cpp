@@ -39,7 +39,8 @@ Source::Source(const std::string& WAVFile, const std::string &PathFile) :
 
     alSourcei(m_source, AL_LOOPING, AL_TRUE);
 
-
+    alSourcef(m_source, AL_REFERENCE_DISTANCE, 1.0);
+    alSourcef(m_source, AL_MAX_DISTANCE, 100.0);
 
     /////////////////////////////////////////////////
     // TEST

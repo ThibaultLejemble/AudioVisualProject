@@ -3,8 +3,7 @@
 
 #include <fstream>
 #include <cmath>
-
-#define FACTOR 1000
+#include <limits>
 
 namespace AVP {
 
@@ -14,15 +13,12 @@ Path::Path(const std::string& file) :
     m_dt()
 {
     load(file);
+    process();
 }
 
 Path::~Path()
 {
 
-}
-
-inline ALfloat validate(ALfloat x) {
-    return std::isinf(x) ? FACTOR*1e9 : FACTOR*x;
 }
 
 void Path::load(const std::string& file)
@@ -50,7 +46,6 @@ void Path::load(const std::string& file)
         n = sscanf(line.c_str(), "%lf", &m_duration);
         if(n!=1)
             ERROR("corrupted file (header)");
-
     }
     else
     {
@@ -66,7 +61,7 @@ void Path::load(const std::string& file)
         if(n!=3)
             ERROR("corrupted file (points)");
 
-        m_positions.push_back({validate(x),validate(y),validate(z)});
+        m_positions.push_back({x,y,z});
     }
 
     stream.close();
@@ -74,4 +69,45 @@ void Path::load(const std::string& file)
     m_dt = m_duration/(m_positions.size()-1);
 }
 
+void Path::process()
+{
+    ALfloat maxDistance = 0;
+    ALfloat minDistance = std::numeric_limits<float>::max();
+
+    for(Point&pos : m_positions)
+        if(!std::isinf(pos[0])&&!std::isinf(pos[1])&&!std::isinf(pos[2]))
+        {
+            maxDistance = std::max(maxDistance, length(pos));
+            minDistance = std::min(minDistance, length(pos));
+        }
+
+    for(Point& pos : m_positions)
+    {
+        if(std::isinf(pos[0])||std::isinf(pos[1])||std::isinf(pos[2]))
+            pos = {2000, 2000, 2000};
+        else
+            scale(1.0, 200, minDistance, maxDistance, pos);
+    }
+}
+
 } // namespace AVP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
