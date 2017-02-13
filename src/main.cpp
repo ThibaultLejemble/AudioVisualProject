@@ -10,8 +10,9 @@ int main(int argc, char *argv[])
 
     AVP::Device device;
     AVP::Source source("../data/01.wav", "../data/01.txt");
-
     device.run(source);
+
+    LOG("End");
 
     return 0;
 }

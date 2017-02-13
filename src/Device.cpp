@@ -46,7 +46,7 @@ void Device::run(Source& source)
 
     while ((t=timer.timeSec())<end) {
         source.update(t);
-        source.printCurrentPosition();
+//        source.printCurrentPosition();
     }
 
 }
