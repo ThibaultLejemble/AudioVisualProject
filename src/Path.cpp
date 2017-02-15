@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cmath>
 #include <limits>
+#include <sstream>
 
 namespace AVP {
 
@@ -69,6 +70,7 @@ void Path::load(const std::string& file)
     m_dt = m_duration/(m_positions.size()-1);
 }
 
+
 void Path::process()
 {
     ALfloat maxDistance = 0;
@@ -88,6 +90,25 @@ void Path::process()
         else
             scale(1.0, 200, minDistance, maxDistance, pos);
     }
+}
+
+
+void Path::print() const
+{
+    std::stringstream time;
+    std::stringstream pos;
+    time << "time = [";
+    pos << "pos = [";
+
+    for(size_t k = 0; k < m_positions.size()-1; ++k)
+    {
+        time << ((double)k)/(m_positions.size()-1)*m_duration << ";";
+        pos << m_positions[k][0] << "," << m_positions[k][1] << "," << m_positions[k][2] << ";";
+    }
+    time << m_duration << "]\n";
+    pos << m_positions[m_positions.size()-1][0] << "," << m_positions[m_positions.size()-1][1] << "," << m_positions[m_positions.size()-1][2] << ";";
+
+    std::cout << time.str() << pos.str() << "\n";
 }
 
 } // namespace AVP

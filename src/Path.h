@@ -55,9 +55,13 @@ protected:
     void load(const std::string& file);
     void process();
 
+    void print() const;
+
     std::vector<Point> m_positions;
     double m_duration;
     double m_dt;
+
+
 
 }; // class Path
 
