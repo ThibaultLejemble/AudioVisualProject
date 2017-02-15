@@ -39,7 +39,7 @@ void Path::load(const std::string& file)
     m_dt = 0;
 
     // parse heander
-    if(std::getline(stream, line))
+    if(std::getline(stream, line, '\r'))
     {
         if(line.size()==0)
             ERROR("corrupted file (blank line)");
@@ -54,7 +54,7 @@ void Path::load(const std::string& file)
     }
 
     // parse points
-    while(std::getline(stream, line)) {
+    while(std::getline(stream, line, '\r')) {
         if(line.size()==0)
             ERROR("corrupted file (blank line)");
 
@@ -62,7 +62,7 @@ void Path::load(const std::string& file)
         if(n!=3)
             ERROR("corrupted file (points)");
 
-        m_positions.push_back({x,y,z});
+        m_positions.push_back({5,x,5});
     }
 
     stream.close();
@@ -73,22 +73,24 @@ void Path::load(const std::string& file)
 
 void Path::process()
 {
-    ALfloat maxDistance = 0;
-    ALfloat minDistance = std::numeric_limits<float>::max();
+    ALfloat maxY = 0;
+    ALfloat minY = std::numeric_limits<float>::max();
 
     for(Point&pos : m_positions)
-        if(!std::isinf(pos[0])&&!std::isinf(pos[1])&&!std::isinf(pos[2]))
+        if(!std::isnan(pos[0])&&!std::isnan(pos[1])&&!std::isnan(pos[2])&&
+           !std::isinf(pos[0])&&!std::isinf(pos[1])&&!std::isinf(pos[2]))
         {
-            maxDistance = std::max(maxDistance, length(pos));
-            minDistance = std::min(minDistance, length(pos));
+            maxY = std::max(maxY, pos[1]);
+            minY = std::min(minY, pos[1]);
         }
 
     for(Point& pos : m_positions)
     {
-        if(std::isinf(pos[0])||std::isinf(pos[1])||std::isinf(pos[2]))
+        if(std::isnan(pos[0])||std::isnan(pos[1])||std::isnan(pos[2])||
+           std::isinf(pos[0])||std::isinf(pos[1])||std::isinf(pos[2]))
             pos = {2000, 2000, 2000};
         else
-            scale(1.0, 200, minDistance, maxDistance, pos);
+            scaleY(-50, 50, minY, maxY, pos[1]);
     }
 }
 
@@ -112,18 +114,6 @@ void Path::print() const
 }
 
 } // namespace AVP
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
