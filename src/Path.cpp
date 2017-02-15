@@ -15,6 +15,7 @@ Path::Path(const std::string& file) :
 {
     load(file);
     process();
+    print();
 }
 
 Path::~Path()
@@ -70,6 +71,9 @@ void Path::load(const std::string& file)
     m_dt = m_duration/(m_positions.size()-1);
 }
 
+bool isInf(const Point& pos) {
+    return pos[0]==2000&&pos[1]==2000&&pos[2]==2000;
+}
 
 void Path::process()
 {
@@ -105,10 +109,13 @@ void Path::print() const
     for(size_t k = 0; k < m_positions.size()-1; ++k)
     {
         time << ((double)k)/(m_positions.size()-1)*m_duration << ";";
-        pos << m_positions[k][0] << "," << m_positions[k][1] << "," << m_positions[k][2] << ";";
+        if(isInf(m_positions[k]))
+            pos << "Inf,Inf,Inf;";
+        else
+            pos << m_positions[k][0] << "," << m_positions[k][1] << "," << m_positions[k][2] << ";";
     }
-    time << m_duration << "]\n";
-    pos << m_positions[m_positions.size()-1][0] << "," << m_positions[m_positions.size()-1][1] << "," << m_positions[m_positions.size()-1][2] << ";";
+    time << m_duration << "];\n";
+    pos << m_positions[m_positions.size()-1][0] << "," << m_positions[m_positions.size()-1][1] << "," << m_positions[m_positions.size()-1][2] << "];\n";
 
     std::cout << time.str() << pos.str() << "\n";
 }
